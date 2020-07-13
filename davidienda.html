@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="assets/css/main.css">
+
+	<title>Davivienda</title>
+
+</head>
+<body>
+
+	<div class="container">
+		<div class="header">
+			<h1>Davivienda QA</h1>
+		</div>
+		<div data-toggle="cards"></div>
+	</div>
+
+	<div class="review">
+		<div class="review-forms">
+			<h2>Resumen</h2>
+			<form id="form-1">
+				<label>SSL no seguro:</label>
+				<input type="text">
+				<button type="submit">Agregar</button>
+			</form><hr>
+			<form id="form-2">
+				<label for="">SSL parcialmente seguro:</label>
+				<input type="text">
+				<button type="submit">Agregar</button>
+			</form><hr>
+			<form id="form-3">
+				<label class="label-all-width">SSL próximos a vencer:</label>
+				<input type="text">
+				<input type="date">
+				<button type="submit">Agregar</button>
+			</form><hr>
+			<form id="form-4">
+				<label>No se puede acceder a este sitio:</label>
+				<input type="text">
+				<button type="submit">Agregar</button>
+			</form><hr>
+			<form id="form-5">
+				<label class="label-all-width">Problemas de maquetación:</label>
+				<input type="text">
+				<input type="text">
+				<button type="submit">Agregar</button>
+			</form><hr>
+		</div>
+		<div class="review-body">
+			<h3>Páginas con certificado SSL pero con conexión no segura:</h3>
+			<div class="list" data-target="list"></div>
+			<h3>Páginas con certificado SSL pero con conexión parcialmente segura:</h3>
+			<div class="list" data-target="list"></div>
+			<h3>Páginas con el certificado SSL a punto de vencer o vencido:</h3>
+			<div class="list" data-target="list"></div>
+			<h3>Páginas no encontradas por el servidor (No se puede acceder a este sitio):</h3>
+			<div class="list" data-target="list"></div>
+			<h3>Páginas con problemas de maquetación:</h3>
+			<div class="list" data-target="list"></div>
+		</div>
+	</div>
+
+	<div class="modal" data-target="modal">
+		<div class="modal-popup">
+			<p>Copiado</p>
+		</div>
+	</div>
+
+	<div class="alert" data-target="alert">
+		<div class="alert-popup">
+			<p>Error</p>
+		</div>
+	</div>
+
+	<script src="assets/js/data.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+</html>
