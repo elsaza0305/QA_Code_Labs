@@ -91,7 +91,7 @@ const inputForm = (form, list) => {
 	});
 }
 
-const inputForm2 = (form, list) => {
+const inputFormDate = (form, list) => {
 	let page = [];
 	form.addEventListener('submit', e => {
 		e.preventDefault();
@@ -111,7 +111,44 @@ const inputForm2 = (form, list) => {
 		input_2.value = '';
 		let html = ``;
 		page.forEach(element => {
-			html += `<p>${element.url} (${element.data})</p>`;
+			const theDate = element.data.replace(/-/g, '/');
+			const date = new Date(theDate);
+
+			const months__ = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+			const days__ = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+			const day = days__[date.getDay()];
+			const dayOfMonth = date.getDate();
+			const month = months__[date.getMonth()];
+			const year = date.getFullYear();
+
+			html += `<p>${element.url} <strong>Fecha:</strong> ${day}, ${dayOfMonth} de ${month} del ${year} </p>`;
+		});
+		list.innerHTML = html;
+	});
+}
+
+const inputFormCSS = (form, list) => {
+	let page = [];
+	form.addEventListener('submit', e => {
+		e.preventDefault();
+
+		let input = e.target[0];
+		let input_2 = e.target[1];
+		if (input.value.trim() === '' || input_2.value.trim() === '') {
+			showAlert();
+			return false;
+		}
+		let objectInputs = {
+			url: input.value,
+			data: input_2.value
+		}
+		page.push(objectInputs);
+		input.value = '';
+		input_2.value = '';
+		let html = ``;
+		page.forEach(element => {
+			html += `<p>${element.url} <strong>Detalles:</strong> ${element.data}</p>`;
 		});
 		list.innerHTML = html;
 	});
@@ -121,24 +158,7 @@ inputForm(form_1, list[0]);
 inputForm(form_2, list[1]);
 inputForm(form_4, list[3]);
 
-inputForm2(form_3, list[2]);
-inputForm2(form_5, list[4]);
+inputFormDate(form_3, list[2]);
 
-// let page = [];
-// form_1.addEventListener('submit', e => {
-// 	e.preventDefault();
-	
-// 	let input = e.target[0];
-// 	if (input.value.trim() === '') {
-// 		showAlert();
-// 		return false;
-// 	}
-// 	page.push(input.value);
-// 	console.log(page);
-// 	input.value = '';
-// 	let html = ``;
-// 	page.forEach(element => {
-// 		html += `<p>${element}</p>`;
-// 	});
-// 	list[0].innerHTML = html;
-// });
+inputFormCSS(form_5, list[4]);
+

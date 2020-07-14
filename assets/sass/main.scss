@@ -193,14 +193,18 @@ body {
 		padding: 20px;
 		h3 {
 			margin: 0 0 5px 0;
-			font-size: 15px;
-			font-weight: bold;
+			font-size: 14px;
+			font-weight: normal;
+			color: $cBlue;
 		}
 		.list {
 			margin-bottom: 5px;
 			p {
 				margin: 0;
 				font-size: 14px;
+				strong {
+					text-transform: uppercase;
+				}
 			}
 		}
 	}
