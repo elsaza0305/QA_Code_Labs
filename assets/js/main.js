@@ -1,164 +1,360 @@
-//Mostrando todos los datos
-///////////////////////////
-///////////////////////////
-let setContainer = document.querySelector('[data-toggle="cards"]');
+$(document).ready(() => {
 
-const content = pages;
-let html = ``;
+	// Mostrar Alerta
 
-content.forEach(element => {
-	html += `
-		<div class="card">
-			<input type="text" class="input" value="${element}" readonly/>
-			<button type="button">Copiar</button>
-			<a href="${element}" target="_blank">Ir</a>
-		</div>
-	`;
-});
-
-setContainer.innerHTML = html;
-
-//Boton de copiar y cambio de color del input cuando se visita
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-let cards = document.querySelectorAll('.card');
-
-cards.forEach(element => {
-	let input = element.children[0];
-	let buttonCopy = element.children[1];
-	let buttonGo = element.children[2];
-
-	buttonGo.addEventListener('click', () => {
-		element.classList.add('checked');
-	});
-
-	buttonCopy.addEventListener('click', () => {
-		let modal = document.querySelector('[data-target="modal"]');
-		
-		input.focus();
-		input.select();
-		document.execCommand('copy');
-		
-		modal.classList.add('active');
-		if (modal.classList.contains('active')) {
+	const alert = $('[data-target="alert"]');
+	const showAlert = () => {
+		alert.addClass('active');
+		if (alert.hasClass('active')) {
 			setTimeout(() => {
-				modal.classList.remove('active');
+				alert.removeClass('active');
 			}, 1000);
 		}
-		
-	});
-});
-
-//Resumen
-/////////
-/////////
-let form_1 = document.querySelector('#form-1');
-let form_2 = document.querySelector('#form-2');
-let form_3 = document.querySelector('#form-3');
-let form_4 = document.querySelector('#form-4');
-let form_5 = document.querySelector('#form-5');
-
-let list = document.querySelectorAll('[data-target="list"]')
-
-let alerta = document.querySelector('[data-target="alert"]');
-
-const showAlert = () => {
-	alerta.classList.add('active');
-	if (alerta.classList.contains('active')) {
-		setTimeout(() => {
-			alerta.classList.remove('active');
-		}, 1000);
 	}
-}
 
-const inputForm = (form, list) => {
-	let page = [];
-	form.addEventListener('submit', e => {
-		e.preventDefault();
+	//Mostrando todos los datos
+	///////////////////////////
+	///////////////////////////
+	
+	const containerLinks = $(`[data-toggle='cards']`);
+	let html = '';
 
-		let input = e.target[0];
-		if (input.value.trim() === '') {
-			showAlert();
-			return false;
-		}
-		page.push(input.value);
-		input.value = '';
-		let html = ``;
-		page.forEach(element => {
-			html += `<p>${element}</p>`;
-		});
-		list.innerHTML = html;
+	// $ -const data- from { data.js }
+	
+	$.each(data, function (i, datasimple) { 
+		html += `
+			<div class="card">
+				<input type="text" class="input" value="${datasimple.link}" readonly/>
+				<button type="button">Copy</button>
+				<a href="${datasimple.link}" target="_blank">Go</a>
+			</div>
+		`;
 	});
-}
 
-const inputFormDate = (form, list) => {
-	let page = [];
-	form.addEventListener('submit', e => {
-		e.preventDefault();
+	containerLinks.html(html);
 
-		let input = e.target[0];
-		let input_2 = e.target[1];
-		if (input.value.trim() === '' || input_2.value.trim() === '') {
-			showAlert();
-			return false;
+	//Boton de copiar y cambio de color del input cuando se visita
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
+	const cards = containerLinks.children();
+
+	$.each(cards, function () {
+		
+		const input = $(this).children('input');
+		const buttonCopy = $(this).children('button');
+		const buttonGo = $(this).children('a');
+
+		buttonGo.click(function () {
+			const mycard = $(this).parent('.card');
+			mycard.addClass('checked');
+		});
+
+		buttonCopy.click(function () {
+
+			const modal = $(`[data-target='modal']`);
+			
+			input.focus();
+			input.select();
+			document.execCommand('copy');
+			
+			modal.addClass('active');
+
+			if (modal.hasClass('active')) {
+				setTimeout(() => {
+					modal.removeClass('active');
+				}, 1000);
+			}
+			
+		});
+
+	});
+
+	// Insertar Datos en LocalStorage
+	const setData = (array, entry, localstr) => {
+
+		const data = localStorage.getItem(localstr);
+
+		if (data) {
+			array = JSON.parse(data);
 		}
+
+		array.push(entry.value);
+		localStorage.setItem(localstr, JSON.stringify(array));
+		entry.value = '';
+
+	}
+
+	const setDataMore = (array, entry_1, entry_2, localstr) => {
+
+		const data = localStorage.getItem(localstr);
+
+		if (data) {
+			array = JSON.parse(data);
+		}
+
 		let objectInputs = {
-			url: input.value,
-			data: input_2.value
+			url: entry_1.value,
+			data: entry_2.value
 		}
-		page.push(objectInputs);
-		input.value = '';
-		input_2.value = '';
-		let html = ``;
-		page.forEach(element => {
-			const theDate = element.data.replace(/-/g, '/');
-			const date = new Date(theDate);
 
-			const months__ = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-			const days__ = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+		array.push(objectInputs);
+		localStorage.setItem(localstr, JSON.stringify(array));
 
-			const day = days__[date.getDay()];
-			const dayOfMonth = date.getDate();
-			const month = months__[date.getMonth()];
-			const year = date.getFullYear();
+		entry_1.value = '';
+		entry_2.value = '';
 
-			html += `<p>${element.url} <strong>Fecha:</strong> ${day}, ${dayOfMonth} de ${month} del ${year} </p>`;
+	}
+
+	// Borrar LocalStorage
+	const deleteData = (selector) => {
+
+		const button = $(selector)
+		button.click(function () {
+
+			const dirstr = $(this).attr('id');
+			localStorage.removeItem(dirstr);
+
+			getData('#list-1', 'ssl-no-seguro');
+			getData('#list-2', 'ssl-parc-seguro');
+			getDataDate('#list-3', 'ssl-vencido');
+			getData('#list-4', 'pages-sin-server');
+			getDataDescription('#list-5', 'pages-maquetacion');
+
 		});
-		list.innerHTML = html;
-	});
-}
 
-const inputFormCSS = (form, list) => {
-	let page = [];
-	form.addEventListener('submit', e => {
-		e.preventDefault();
+	}
 
-		let input = e.target[0];
-		let input_2 = e.target[1];
-		if (input.value.trim() === '' || input_2.value.trim() === '') {
-			showAlert();
-			return false;
+	//Obtener Datos LocalStorage
+	const getData = (selector, localstr) => {
+		const container = $(selector);
+		const datas = localStorage.getItem(localstr);
+		let html = '';
+
+		if (datas) {
+
+			if (JSON.parse(datas).length > 0) {
+
+				$.each(JSON.parse(datas), function(i, data) {
+					html += `<p>${data}</p>`;
+				});
+
+				if (selector === '#list-1') {
+					container.html(`
+						<h3>Páginas con certificado SSL pero con conexión no segura:</h3>
+						${html}
+						<div class="delete-local-str">
+							<button id="ssl-no-seguro">Borrar Registro</button>
+						</div>
+					`);
+					deleteData('#ssl-no-seguro');
+				}
+		
+				if (selector === '#list-2') {
+					container.html(`
+						<h3>Páginas con certificado SSL pero con conexión parcialmente segura:</h3>
+						${html}
+						<div class="delete-local-str">
+							<button id="ssl-parc-seguro">Borrar Registro</button>
+						</div>
+					`);
+					deleteData('#ssl-parc-seguro');
+				}
+		
+				if (selector === '#list-4') {
+					container.html(`
+						<h3>Páginas no encontradas por el servidor (No se puede acceder a este sitio):</h3>
+						${html}
+						<div class="delete-local-str">
+							<button id="pages-sin-server">Borrar Registro</button>
+						</div>
+					`);
+					deleteData('#pages-sin-server');
+				}
+
+			}
+	
+		} else {
+			container.html('');
 		}
-		let objectInputs = {
-			url: input.value,
-			data: input_2.value
+
+	}
+
+	const getDataDate = (selector, localstr) => {
+		const container = $(selector);
+		const datas = localStorage.getItem(localstr);
+		let html = '';
+
+		if (datas) {
+
+			if (JSON.parse(datas).length > 0) {
+
+				$.each(JSON.parse(datas), function(i, data) {
+					const theDate = data.data.replace(/-/g, '/');
+					const date = new Date(theDate);
+
+					const months__ = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+					const days__ = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+					const day = days__[date.getDay()];
+					const dayOfMonth = date.getDate();
+					const month = months__[date.getMonth()];
+					const year = date.getFullYear();
+
+					html += `<p>${data.url} <strong>Fecha:</strong> ${day}, ${dayOfMonth} de ${month} del ${year} </p>`;
+				});
+
+				container.html(`
+					<h3>Páginas con el certificado SSL a punto de vencer o vencido:</h3>
+					${html}
+					<div class="delete-local-str">
+						<button id="ssl-vencido">Borrar Registro</button>
+					</div>
+				`);
+
+				deleteData('#ssl-vencido')
+				
+			}
+	
+		} else {
+			container.html('');
 		}
-		page.push(objectInputs);
-		input.value = '';
-		input_2.value = '';
-		let html = ``;
-		page.forEach(element => {
-			html += `<p>${element.url} <strong>Detalles:</strong> ${element.data}</p>`;
+	}
+
+	const getDataDescription = (selector, localstr) => {
+		const container = $(selector);
+		const datas = localStorage.getItem(localstr);
+		let html = '';
+
+		if (datas) {
+
+			if (JSON.parse(datas).length > 0) {
+
+				$.each(JSON.parse(datas), function(i, data) {
+					html += `<p>${data.url} <strong>Detalles:</strong> ${data.data}</p>`;
+				});
+
+				container.html(`
+					<h3>Páginas con problemas de maquetación:</h3>
+					${html}
+					<div class="delete-local-str">
+						<button id="pages-maquetacion">Borrar Registro</button>
+					</div>
+				`);
+
+				deleteData('#pages-maquetacion')
+
+			}
+	
+		} else {
+			container.html('');
+		}
+
+	}
+
+	// QA
+	/////////
+	/////////
+	
+	const inputForm = (selector) => {
+
+		const form = $(selector);
+		let page = [];
+		
+		form.submit(function (e) {
+			e.preventDefault();
+
+			let list = $(`#${$(this).attr('data-list')}`);
+			const input = e.target[0];
+
+			if (input.value.trim() === '') {
+				showAlert();
+				return false;
+			}
+			
+			if (list.attr('id') === 'list-1') {
+
+				setData(page, input, 'ssl-no-seguro');
+				getData('#list-1', 'ssl-no-seguro');
+
+			}
+
+			if (list.attr('id') === 'list-2') {
+				setData(page, input, 'ssl-parc-seguro');
+				getData('#list-2', 'ssl-parc-seguro');
+			}
+
+			if (list.attr('id') === 'list-4') {
+				setData(page, input, 'pages-sin-server');
+				getData('#list-4', 'pages-sin-server');
+			}
+
 		});
-		list.innerHTML = html;
-	});
-}
+	}
 
-inputForm(form_1, list[0]);
-inputForm(form_2, list[1]);
-inputForm(form_4, list[3]);
+	const inputFormDate = (selector) => {
 
-inputFormDate(form_3, list[2]);
+		const form = $(selector);
+		let page = [];
 
-inputFormCSS(form_5, list[4]);
+		form.submit(function (e) {
+
+			e.preventDefault();
+
+			let list = $(`#${$(this).attr('data-list')}`);
+			const input = e.target[0];
+			const input_2 = e.target[1];
+			
+			if (input.value.trim() === '' || input_2.value.trim() === '') {
+				showAlert();
+				return false;
+			}
+
+			if (list.attr('id') === 'list-3') {
+				setDataMore(page, input, input_2, 'ssl-vencido');
+				getDataDate('#list-3', 'ssl-vencido');
+			}
+
+		});
+	}
+
+	const inputFormCSS = (selector) => {
+
+		const form = $(selector)
+		let page = [];
+
+		form.submit(function (e) {
+
+			e.preventDefault();
+
+			let list = $(`#${$(this).attr('data-list')}`);
+
+			const input = e.target[0];
+			const input_2 = e.target[2];
+
+			if (input.value.trim() === '' || input_2.value.trim() === '') {
+				showAlert();
+				return false;
+			}
+
+			if (list.attr('id') === 'list-5') {
+				setDataMore(page, input, input_2, 'pages-maquetacion');
+				getDataDescription('#list-5', 'pages-maquetacion');
+			}
+
+		});
+	}
+
+	getData('#list-1', 'ssl-no-seguro');
+	getData('#list-2', 'ssl-parc-seguro');
+	getDataDate('#list-3', 'ssl-vencido');
+	getData('#list-4', 'pages-sin-server');
+	getDataDescription('#list-5', 'pages-maquetacion');
+
+	inputForm('#form-1');
+	inputForm('#form-2');
+	inputForm('#form-4');
+	inputFormDate('#form-3');
+	inputFormCSS('#form-5');
+
+});
 

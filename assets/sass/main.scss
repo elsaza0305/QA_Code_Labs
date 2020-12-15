@@ -6,41 +6,67 @@ $cRed: #cc2929;
 $cWhite: #ffffff;
 $cGreen: #13a830;
 $cYellow: #ffe83b;
-$cBlue: rgba(9,9,121,1);
+$cBlue: #4f4fb9;
 $cLightBlue: rgba(0,212,255,1);
+
+$cp1: #29c1cc;
+$cp2: #4444a0;
+$cp3: #1b1b72;
+$cp4: #1392a8;
+$cp6: #13a83180;
+$cp7: #cc2929;
+$cp8: #88D397;
+
+$cg1: #e7e7e7;
+$cg2: #333333;
+$cg3: #fafafa;
+$cg4: #cecece;
+$cg5: #5e5e5e;
+
+$cw: #ffffff;
 
 *, ::after, ::before {
 	box-sizing: border-box
 }
 
+::-webkit-scrollbar {
+	width: 8px;
+	background: $cg1;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba($cp1, .3);
+	border-radius: 10px;
+}
+
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	background: $bgr;
+	background: $cw;
 	background-size: cover;
 	background-attachment: fixed;
 }
 
 .container {
 	width: 100%;
-	margin: 20px auto;
+	margin: 30px auto;
 	padding: 0 20px;
 	.header {
 		width: 100%;
 		text-align: left;
-		h1 {
-			color: $cWhite;
-			font-size: 3em;
-		}
 	}
 	.card {
 		display: flex;
 		.input {
+			font-size: 14px;
+			color: $cg2;
+			background: $cg1;
 			width: 300px;
-			padding: 5px;
+			padding: 5px 10px;
 			margin-bottom: 3px;
 			margin-right: 10px;
 			outline: none;
 			border: none;
+			border-radius: 10px;
 			cursor: copy;
 			&::selection {
 				background-color: transparent;
@@ -57,22 +83,28 @@ body {
 			outline: none;
 			margin-bottom: 3px;
 			margin-right: 10px;
-			color: $cBlue;
+			color: $cg1;
 			padding: 5px 10px;
-			background-color: $cLightBlue;
+			background: $cp2;
+			border-radius: 10px;
+			font-size: 14px;
 			&:hover {
-				background-color: rgba($color: $cLightBlue, $alpha: .9);
+				background: $cp3;
 				cursor: pointer;
+				transition: ease all .4s;
 			}
 		}
 		a {
 			text-decoration: none;
-			background-color: $cGreen;
-			color: $cWhite;
+			background: $cp1;
+			color: $cg1;
+			font-size: 14px;
+			border-radius: 10px;
 			padding: 5px 10px;
 			margin-bottom: 3px;
 			&:hover {
-				background-color: rgba($color: $cGreen, $alpha: .9);
+				background: $cp4;
+				transition: ease all .4s;
 			}
 		}
 	}
@@ -80,27 +112,27 @@ body {
 
 .input {
 	.card.checked & {
-		background-color: rgba($color: $cGreen, $alpha: .5);
-		color: $cWhite;
+		background: $cp6;
+		color: $cw;
 	}
 }
 
 .modal {
 	display: none;
 	position: fixed;
-	bottom: 50px;
-	width: 100%;
-	z-index: 1200;
+	top: 10px;
+	right: 10px;
+	z-index: 1500;
 	.modal-popup {
-		width: 40%;
-		margin: 0 auto;
-		background-color: rgba($color: $cYellow, $alpha: .8);
+		width: 120px;
+		background: $cp8;
 		text-align: center;
+		border-radius: 10px;
 		p {
 			margin: 0;
-			padding: 20px 0;
+			font-size: 15px;
+			padding: 10px 0;
 			color: $cWhite;
-			font-weight: bold;
 		}
 	}
 	&.active {
@@ -111,19 +143,19 @@ body {
 .alert {
 	display: none;
 	position: fixed;
-	bottom: 50px;
-	width: 100%;
-	z-index: 1200;
+	top: 10px;
+	right: 10px;
+	z-index: 1500;
 	.alert-popup {
-		width: 40%;
-		margin: 0 auto;
-		background-color: rgba($color: $cRed, $alpha: .8);
+		width: 120px;
+		background: $cp7;
 		text-align: center;
+		border-radius: 10px;
 		p {
 			margin: 0;
-			padding: 20px 0;
+			font-size: 15px;
+			padding: 10px 0;
 			color: $cWhite;
-			font-weight: bold;
 		}
 	}
 	&.active {
@@ -138,50 +170,111 @@ body {
 	top: 0;
 	right: 0;
 	width: 50%;
-	background-color: $cWhite;
-	padding: 20px;
-	overflow-y: scroll;
+	background: linear-gradient(to right, $cw, rgba($cp1, .05), rgba($cp1, .1));
+	padding: 30px 20px;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+		background: $cg1;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: rgba($cp4, .2);
+	}
 	.review-forms {
 		h2 {
-			margin: 0 0 10px 0;
-			color: $cBlue;
+			font-size: 30px;
+			margin: 0 0 20px 0;
+			color: $cp1;
 		}
 		form {
-			margin-bottom: 5px;
+			margin-bottom: 15px;
 			label {
 				margin-right: 10px;
+				font-size: 15px;
+				color: $cg2;
 			}
 			.label-all-width {
 				display: block;
-				margin-bottom: 5px;
+				margin-bottom: 7px;
 			}
-			input[type="text"] {
+			input {
 				margin-right: 10px;
 				outline: none;
-				border: none;
-				background-color: $cBlue;
-				color: $cWhite;
-				padding: 5px;
+				border: 1px solid $cg4;
+				border-radius: 10px;
+				background: $cg3;
+				color: $cg2;
+				padding: 5px 10px;
+				font-size: 14px;
+				width: 100%;
+				max-width: 200px;
+
+				&.input-date {
+					max-width: 150px;
+					text-align: center;
+					cursor: pointer;
+				}
+
+				&::-webkit-input-placeholder { 
+					color: $cg4;
+				}
+
+				&:-moz-placeholder { 
+					/* Firefox 18- */ color: $cg4; 
+				} 
+
+				&::-moz-placeholder {	
+					/* Firefox 19+ */ color: $cg4; 
+				} 
+
+				&:-ms-input-placeholder { 
+					color: $cg4; 
+				}
 			}
-			input[type="date"] {
-				margin-right: 10px;
+			textarea {
+				color: $cg2;
+				margin-top: 5px;
+				background: $cg3;
+				display: block;
+				width: 100%;
 				outline: none;
-				border: none;
-				background-color: $cBlue;
-				color: $cWhite;
-				padding: 5px;
-				cursor: pointer;
-				text-align: center;
+				border: 1px solid $cg4;
+				resize: none;
+				padding: 10px;
+				font-size: 14px;
+				border-radius: 10px;
+
+				&::-webkit-input-placeholder { 
+					color: $cg4;
+				}
+
+				&:-moz-placeholder { 
+					/* Firefox 18- */ color: $cg4; 
+				} 
+
+				&::-moz-placeholder {	
+					/* Firefox 19+ */ color: $cg4; 
+				} 
+
+				&:-ms-input-placeholder { 
+					color: $cg4; 
+				}
 			}
 			button {
 				border: none;
 				outline: none;
-				color: $cBlue;
+				color: $cg1;
 				padding: 5px 10px;
-				background-color: $cLightBlue;
+				background: $cp2;
+				font-size: 14px;
+				border-radius: 10px;
 				&:hover {
-					background-color: rgba($color: $cLightBlue, $alpha: .9);
+					background: $cp3;
 					cursor: pointer;
+					transition: ease all .4s;
 				}
 			}
 		}
@@ -189,23 +282,47 @@ body {
 	.review-body {
 		margin-top: 10px;
 		margin-bottom: 10px;
-		background-color: $cGray;
+		border-radius: 10px;
 		padding: 20px;
-		h3 {
-			margin: 0 0 5px 0;
-			font-size: 13px;
-			font-weight: bold;
-			color: $cBlue;
-		}
 		.list {
+			h3 {
+				margin: 20px 0 5px 0;
+				font-size: 13px;
+				font-weight: bold;
+				color: $cp2;
+			}
 			margin-bottom: 5px;
 			p {
 				margin: 0;
 				font-size: 13px;
+				color: $cg5;
 				strong {
 					text-transform: uppercase;
 				}
 			}
+			.delete-local-str {
+				display: flex;
+				justify-content: flex-end;
+				button {
+					background: $cp7;
+					border-radius: 10px;
+					border: none;
+					color: $cw;
+					cursor: pointer;
+					font-size: 12px;
+					margin-top: 10px;
+					outline: none;
+					padding: 5px 0;
+					width: 130px;
+
+					&:hover {
+						background: rgba($cp7, .9);
+						transition: ease all .4s;
+						cursor: pointer;
+					}
+				}
+			}
 		}
+
 	}
 }
